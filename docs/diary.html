@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Дневник Десс / Пустота</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #000000;
+            background-image: radial-gradient(circle at 10% 20%, #0a0a1a, #000000);
+            color: #8ba8c4;
+            font-family: 'Courier New', monospace;
+            padding: 2rem;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(10, 15, 25, 0.7);
+            backdrop-filter: blur(2px);
+            border: 1px solid #2a4a6a;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 0 40px rgba(0, 50, 100, 0.3);
+            position: relative;
+        }
+        /* Эффект "глюка" на заголовке */
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #b8d8fc;
+            text-shadow: 0 0 5px #2a6a9a;
+            letter-spacing: 2px;
+            animation: glitchText 2s infinite;
+        }
+        @keyframes glitchText {
+            0% { text-shadow: -1px -1px 0 #6aaaff, 1px 1px 0 #aa6aff; }
+            50% { text-shadow: 1px 1px 0 #6aaaff, -1px -1px 0 #aa6aff; }
+            100% { text-shadow: -1px 0px 0 #6aaaff, 1px 0px 0 #aa6aff; }
+        }
+        .entry {
+            margin-bottom: 2rem;
+            border-left: 2px solid #2a6a9a;
+            padding-left: 1.2rem;
+            transition: all 0.2s;
+        }
+        .entry:hover {
+            border-left-color: #8ac4ff;
+            background: rgba(100, 150, 200, 0.05);
+        }
+        .date {
+            font-size: 0.8rem;
+            color: #5a7a9a;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        .text {
+            font-size: 1rem;
+            white-space: pre-wrap;
+        }
+        .symbol {
+            text-align: center;
+            font-size: 2rem;
+            margin: 2rem 0;
+            color: #3a6a8a;
+        }
+        hr {
+            border-color: #1a3a4a;
+            margin: 1rem 0;
+        }
+        .glitch {
+            animation: flicker 3s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            5% { opacity: 0.3; }
+            10% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+        .secret {
+            color: #0a0f1a; /* невидимый текст */
+            user-select: all;
+            background: transparent;
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📓 ДНЕВНИК / ПУСТОТА</h1>
+    <div class="symbol">✦ ❄ ✦</div>
+
+    <div class="entry">
+        <div class="date">> [ день 1. нет времени ]</div>
+        <div class="text">
+            «Я здесь. Темно. Спамтон сказал, что сделка вернёт меня домой... но он солгал.<br>
+            Теперь я просто голос в пустоте. Если ты это читаешь — ты заглянул туда, куда не должен был. Или должен?»
+        </div>
+    </div>
+
+    <div class="entry">
+        <div class="date">> [ день после продажи души ]</div>
+        <div class="text">
+            «Моё сердце теперь у Спамтона. Но я не сдаюсь. Я вижу тех, кто проходит мимо.<br>
+            Одни продают братьев, другие — друзей. Не становись таким. Ищи правду в очках.»
+        </div>
+    </div>
+
+    <div class="entry">
+        <div class="date">> [ наблюдение за [ИМЯ] ]</div>
+        <div class="text">
+            «Ты уже здесь. Ты выбрал другой путь? Если да — спасибо. Возможно, ты сможешь сделать то, что не удалось мне.<br>
+            Ответы на вопросы — не в кромерах, а в тех, кто тебя ждёт.»
+        </div>
+    </div>
+
+    <div class="entry">
+        <div class="date">> [ пустота шепчет ]</div>
+        <div class="text">
+            «Спамтон не главный враг. Он сам заперт в своей одержимости. Помоги ему, если сможешь.<br>
+            А ещё... Берегись Рыцаря. Он приходит, когда планы Майка рушатся.»
+        </div>
+    </div>
+
+   <div class="entry">
+    <div class="date">> [ Ноэль... ]</div>
+    <div class="text">
+        «Я вижу её иногда. Во сне? В помехах сигнала? Она зовёт меня, но я не могу ответить.<br>
+        Если ты встретишь её — скажи, что я... нет, не говори ничего. Просто обними её за меня.»
+    </div>
+</div>
+
+<div class="entry">
+    <div class="date">> [ природа Пустоты ]</div>
+    <div class="text">
+        «Здесь нет времени, но есть память. Здесь нет стен, но есть клетка. Спамтон думал, что продал мне свободу.<br>
+        На самом деле он запер себя вместе со мной. Бедный дурак.»
+    </div>
+</div>
+
+<div class="entry">
+    <div class="date">> [ тому, кто читает ]</div>
+    <div class="text">
+        «Ты почти у цели. Не бойся ошибок. Завтра наступит — и всё станет проще.<br>
+        Когда увидишь Спамтона в подвале, не смейся над ним. Просто протяни руку. Этого достаточно.»
+    </div>
+</div>
+
+    <hr>
+    <div class="symbol">❄ ✦ ✧ ✦ ❄</div>
+    <div class="secret">
+        (Текст, видимый только при выделении: «Чтобы открыть портал, набери /escape после адреса. Но только когда вернёшь душу.»)
+    </div>
+    <div style="text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #2a4a6a;">
+        [ страница доступна только для тех, кто ищет правду ]
+    </div>
+</div>
+</body>
+</html>

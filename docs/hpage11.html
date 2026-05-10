@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Финальная битва</title>
+    <style>
+        /* ========== СТИЛИ ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body {
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 700px;
+            width: 90%;
+            background: #0a0f1a;
+            border: 2px solid #8b0000;
+            border-radius: 20px;
+            padding: 2rem;
+            color: #e0e0e0;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(139,0,0,0.3);
+            z-index: 2;
+        }
+        .knight-image img {
+            max-width: 200px;
+            filter: drop-shadow(0 0 10px #8b0000);
+            margin-bottom: 1rem;
+        }
+        .battle-text {
+            background: #00000099;
+            padding: 1rem;
+            border-left: 4px solid #ff4444;
+            text-align: left;
+            margin: 1rem 0;
+            min-height: 120px;
+            font-size: 1rem;
+        }
+        .action-area {
+            margin: 1rem 0;
+        }
+        input {
+            width: 70%;
+            padding: 10px;
+            background: #1e2a2a;
+            border: 1px solid #8b0000;
+            color: #ff8888;
+            font-family: monospace;
+            font-size: 1rem;
+            text-align: center;
+        }
+        button {
+            background: #2a1a1a;
+            border: 1px solid #8b0000;
+            color: #ff8888;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 1rem;
+            border-radius: 30px;
+        }
+        button:hover {
+            background: #8b0000;
+            color: black;
+        }
+        .hidden { display: none; }
+
+        /* Анимация удара на весь экран */
+        .hit-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.7);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: hitFlash 0.3s ease-out forwards;
+        }
+        .hit-overlay img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+        @keyframes hitFlash {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        /* Анимация взрыва на весь экран */
+        .explosion-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 100, 0, 0.9);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: explode 1s ease-out forwards;
+        }
+        .explosion-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            filter: brightness(1.2) drop-shadow(0 0 20px orange);
+        }
+        @keyframes explode {
+            0% { opacity: 1; transform: scale(1); }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #ff8888;
+            white-space: pre-wrap;
+            margin: 1rem 0;
+            animation: blink-cursor 0.75s step-end infinite;
+        }
+        @keyframes blink-cursor {
+            0%, 100% { border-color: #ff8888; }
+            50% { border-color: transparent; }
+        }
+    </style>
+
+    <!-- АУДИО С ЗАГЛУШКАМИ -->
+    <audio id="knightMusic" loop>
+        <source src="music/knife.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="hitSound">
+        <source src="music/swoon.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="laughSound">
+        <source src="music/gerson-laugh.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="explosionSound">
+        <source src="music/explosion.mp3" type="audio/mpeg">
+    </audio>
+</head>
+<body>
+<div class="container" id="gameContainer">
+    <div class="knight-image" id="knightImg">
+        <img src="images/knight.jpg" alt="Рокочущий Рыцарь" onerror="this.src='https://via.placeholder.com/200?text=Рыцарь'">
+    </div>
+    <div class="battle-text" id="battleText">
+        Из темноты выступает РОКОЧУЩИЙ РЫЦАРЬ.<br>
+        "Ты нарушаешь планы МАЙКА. Твой путь здесь заканчивается."
+    </div>
+    <div id="actionArea" class="action-area">
+        <input type="text" id="userAction" placeholder="Введи действие..." autofocus>
+        <button id="actionBtn">ДЕЙСТВОВАТЬ</button>
+    </div>
+    <div id="outcomeArea"></div>
+</div>
+
+<script>
+    // ========== ЗВУКИ И МУЗЫКА ==========
+    let musicStarted = false;
+    const knightMusic = document.getElementById('knightMusic');
+    const hitSound = document.getElementById('hitSound');
+    const laughSound = document.getElementById('laughSound');
+    const explosionSound = document.getElementById('explosionSound');
+
+    function playSilently(audioElement) {
+    if (audioElement && audioElement.readyState >= 2) {
+        audioElement.volume = 0.7;   // ← добавь эту строку (0.3 = 30% громкости)
+        audioElement.currentTime = 0;
+        audioElement.play().catch(() => {});
+    }
+}
+
+    function startMusic() {
+        if (!musicStarted) {
+            if (knightMusic && knightMusic.readyState >= 2) {
+                knightMusic.play().catch(() => {});
+            }
+            musicStarted = true;
+        }
+    }
+    document.body.addEventListener('click', startMusic);
+    document.getElementById('userAction').addEventListener('focus', startMusic);
+
+    // ========== ЛОГИКА БИТВЫ ==========
+    let hitCount = 0;
+    let heroDefeated = false;
+    let gersonTriggered = false;
+
+    const battleText = document.getElementById('battleText');
+    const actionArea = document.getElementById('actionArea');
+    const userInput = document.getElementById('userAction');
+    const actionBtn = document.getElementById('actionBtn');
+
+    function showHitOverlay() {
+        playSilently(hitSound);
+        const overlay = document.createElement('div');
+        overlay.className = 'hit-overlay';
+        overlay.innerHTML = `<img src="images/swoon.gif" alt="УДАР" onerror="this.src='https://via.placeholder.com/400?text=СМЕРТЕЛЬНЫЙ+УДАР'">`;
+        document.body.appendChild(overlay);
+        setTimeout(() => overlay.remove(), 350);
+    }
+
+    function applyHit() {
+        hitCount++;
+        showHitOverlay();
+        document.body.style.backgroundColor = '#330000';
+        setTimeout(() => document.body.style.backgroundColor = '', 200);
+        battleText.innerHTML = `<span style="color:#ff8888;">💥 РЫЦАРЬ НАНОСИТ СОКРУШИТЕЛЬНЫЙ УДАР! 💥</span><br>Ты отлетаешь в сторону, но поднимаешься.`;
+        
+        if (hitCount >= 3 && !heroDefeated && !gersonTriggered) {
+            heroDefeated = true;
+            actionArea.classList.add('hidden');
+            typewriterEffect();
+        } else if (!gersonTriggered) {
+            userInput.value = '';
+            userInput.focus();
+        }
+    }
+
+    function typewriterEffect() {
+        const text = "У тебя заканчиваются силы... как вдруг...";
+        battleText.innerHTML = "";
+        const typeDiv = document.createElement('div');
+        typeDiv.className = 'typewriter';
+        battleText.appendChild(typeDiv);
+        let i = 0;
+        function typeNext() {
+            if (i < text.length) {
+                typeDiv.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeNext, 60);
+            } else {
+                setTimeout(() => spawnGerson(), 600);
+            }
+        }
+        typeNext();
+    }
+
+    function spawnGerson() {
+        gersonTriggered = true;
+
+        // ВЗРЫВ НА ВЕСЬ ЭКРАН
+        const explosionDiv = document.createElement('div');
+        explosionDiv.className = 'explosion-overlay';
+        explosionDiv.innerHTML = `<img src="images/explosion.gif" alt="ВЗРЫВ" onerror="this.src='https://via.placeholder.com/400?text=БАБАХ!'">`;
+        document.body.appendChild(explosionDiv);
+        playSilently(explosionSound);
+        setTimeout(() => explosionDiv.remove(), 1000);
+
+        // Меняем картинку рыцаря на взрыв
+        const knightImgDiv = document.getElementById('knightImg');
+        knightImgDiv.innerHTML = `<img src="images/explosion.gif" alt="Взрыв" style="max-width:200px;" onerror="this.src='https://via.placeholder.com/200?text=POW!'">`;
+        
+        // ТЕКСТ ГЕРСОНА (без смеха, но через 1.5 секунды добавим смех)
+        battleText.innerHTML = `🐢✨ Появляется ГЕРСОН! ✨🐢<br>
+        Он смеётся: "Хе-хе-хе! Молодец, парень! Ты держался, не сдавался. Твоя решимость достойна уважения. А теперь смотри, как я разберусь с этим шумным болваном!"<br>
+        Герсон взмахивает молотом — Рыцарь взрывается оглушительным "БА-БАХ!"`;
+
+        // Проигрываем звук смеха чуть позже, чтобы он перекрыл взрыв
+        setTimeout(() => {
+            playSilently(laughSound);
+        }, 180);
+
+        // Переход на good_ending.html через 3 секунды
+        setTimeout(() => {
+            window.location.href = "hend.html";
+        }, 3200);
+    }
+
+    actionBtn.addEventListener('click', () => {
+        startMusic();
+        if (gersonTriggered) return;
+        let action = userInput.value.trim();
+        if (action === "") {
+            battleText.innerHTML = "Рыцарь ждёт... Ты должен что-то сделать.";
+            return;
+        }
+        if (hitCount < 3 && !heroDefeated) {
+            applyHit();
+        }
+    });
+// Запуск музыки при фокусе на поле ввода
+const inputField = document.getElementById('userAction');
+if (inputField) {
+    inputField.addEventListener('focus', () => {
+        if (knightMusic && !musicStarted) {
+            knightMusic.play().catch(e => console.log("Музыка не заиграла"));
+            musicStarted = true;
+        }
+    });
+}
+</script>
+	<button onclick="document.getElementById('knightMusic').play()" style="position:fixed; bottom:10px; left:10px; z-index:9999;">🎵 Включить музыку</button>
+</body>
+</html>

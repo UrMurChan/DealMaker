@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Контракт подписан</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0505;
+            background-image: radial-gradient(circle at 10% 20%, #1a0000, #000000);
+            color: #aa2222;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .terminal {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #aa2222;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 0 30px rgba(170, 34, 34, 0.3);
+        }
+        .line {
+            margin-bottom: 0.5rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 1.1rem;
+        }
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.1rem;
+            background-color: #aa2222;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        button {
+            margin-top: 2rem;
+            background: transparent;
+            border: 2px solid #aa2222;
+            color: #aa2222;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 40px;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+        button:hover {
+            background: #aa2222;
+            color: black;
+            box-shadow: 0 0 20px #aa2222;
+        }
+        .hidden {
+            display: none;
+        }
+        .glow {
+            text-shadow: 0 0 5px #aa2222;
+        }
+    </style>
+</head>
+<body>
+<div class="terminal">
+    <div id="textContainer"></div>
+    <div id="cursorLine">
+        <span class="cursor"></span>
+    </div>
+    <button id="yesBtn" class="hidden">💀 ДА 💀</button>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="music/spamton2.mp3" type="audio/mpeg">
+</audio>
+<audio id="confirmSound">
+    <source src="music/click.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    // --- Текст для анимации (построчно) ---
+    const lines = [
+        "> ДУША СИНХРОНИЗИРОВАНА.",
+        "> КОНТРАКТ ПОДПИСАН.",
+        "> СВЯЗИ С ЯКОРЯМИ РАЗРУШЕНЫ.",
+        "> ОТКРЫТ ДОСТУП К КОНТРОЛЮ ДУШИ.",
+        "",
+        "> ВЫ ГОТОВЫ СТАТЬ БОЛЬШОЙ ШИШКОЙ?",
+        "",
+        "> ОТВЕТ МОЖЕТ БЫТЬ ТОЛЬКО ОДНИМ..."
+    ];
+
+    let lineIndex = 0;
+    let charIndex = 0;
+    let currentLineElement = null;
+    let isFinished = false;
+
+    const textContainer = document.getElementById('textContainer');
+    const cursorLine = document.getElementById('cursorLine');
+    const yesButton = document.getElementById('yesBtn');
+
+    // Музыку и звук запускаем по первому клику
+    let audioStarted = false;
+    const bgMusic = document.getElementById('bgMusic');
+    const confirmSound = document.getElementById('confirmSound');
+
+    function startAudio() {
+        if (!audioStarted) {
+            bgMusic.play().catch(e => console.log("музыка не загружена"));
+            audioStarted = true;
+        }
+    }
+    document.body.addEventListener('click', startAudio);
+
+    function typeNextChar() {
+        if (lineIndex >= lines.length) {
+            if (!isFinished) {
+                isFinished = true;
+                cursorLine.style.display = 'none';
+                yesButton.classList.remove('hidden');
+            }
+            return;
+        }
+
+        const currentLine = lines[lineIndex];
+        if (!currentLineElement) {
+            currentLineElement = document.createElement('div');
+            currentLineElement.className = 'line';
+            textContainer.appendChild(currentLineElement);
+        }
+
+        if (charIndex < currentLine.length) {
+            currentLineElement.textContent += currentLine[charIndex];
+            charIndex++;
+            setTimeout(typeNextChar, 35);
+        } else {
+            lineIndex++;
+            charIndex = 0;
+            currentLineElement = null;
+            setTimeout(typeNextChar, 80);
+        }
+    }
+
+    // Запуск анимации после небольшой задержки (чтобы страница прогрузилась)
+    window.addEventListener('load', () => {
+        setTimeout(typeNextChar, 300);
+    });
+
+    // Кнопка "ДА" ведёт на плохую концовку
+    yesButton.addEventListener('click', () => {
+        startAudio();
+        confirmSound.play().catch(e => console.log("нет звука"));
+        setTimeout(() => {
+            window.location.replace("send.html");
+        }, 200);
+    });
+</script>
+</body>
+</html>

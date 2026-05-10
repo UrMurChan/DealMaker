@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Длинный вопрос — Маркетинговое ТЗ</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0f1a;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #11161f;
+            border: 1px solid #2a3a4a;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 900px;
+            width: 100%;
+        }
+        h1 { color: #ffaa44; text-shadow: 0 0 5px #ffaa44; }
+        .long-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 1.5rem 0;
+            background: #0a0f1a;
+            padding: 1rem;
+            border-left: 3px solid #ffaa44;
+            white-space: pre-wrap;
+        }
+        input, button { width: 100%; padding: 12px; margin-top: 1rem; font-family: monospace; }
+        input { background: #1e2a2a; border: 1px solid #2a4a4a; color: #00ffaa; }
+        button { background: #1e2a2a; border: 1px solid #00ffaa; color: #00ffaa; cursor: pointer; border-radius: 30px; }
+        button:hover { background: #00ffaa; color: black; }
+        .error { color: #ff5555; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📄 ВОПРОС 10 из 11 (МАРКЕТИНГОВОЕ ЗАДАНИЕ)</h1>
+    <div class="long-text">
+       <strong>ТЕХНИЧЕСКОЕ ЗАДАНИЕ № КР-666</strong><br>
+Исполнитель: Человек с ДУШОЙ<br>
+Заказчик: Спамтон (Big Shot Enterprises)<br>
+Срок: до потери души<br><br>
+
+<strong>Описание проекта:</strong><br>
+Разработать универсальную систему монетизации всего, что существует в Тёмном мире, включая пустоту, слёзы и невыполненные обещания.<br><br>
+
+<strong>Требования к системе:</strong><br>
+1. Каждое нажатие на кнопку должно приносить заказчику 0.5 души конечного пользователя.<br>
+2. Предусмотреть возможность продажи воздуха (с пометкой «редкий, свежий, ничей»).<br>
+3. Реализовать подписку «Kromer Premium»: платишь каждый месяц — получаешь право платить дальше.<br>
+4. Создать рекламный слоган для пустых Пиписов (без начинки). Предложение принимается в свободной форме.<br>
+5. Добавить скрытый пункт в договор, который позволяет заказчику в любой момент конфисковать душу клиента без предупреждения.<br>
+6. Рассчитать юнит-экономику продажи надежды (стартовый капитал — 1 монета Kromer, целевая аудитория — все, кто ещё не продал душу).<br>
+7. Обеспечить невозможность закрыть всплывающее окно с предложением купить Пиписа. Кнопка «Да» — единственная активная. Кнопка «Нет» перезагружает страницу с тем же окном.<br>
+8. Провести A/B тестирование двух стратегий обмана: «ты сам виноват» vs «так положено».<br>
+9. Подготовить отчёт о синергии между продажей слёз и покупкой кнопок.<br>
+10. Самое главное — придумать <strong>ОДНО СЛОВО</strong>, которое резюмирует всю эту бизнес-модель и является паролем для доступа к следующему этапу.<br><br>
+
+<strong>Вознаграждение:</strong><br>
+Вы получите право стать Большой Шишкой (душа не возвращается, подарок выдаётся по усмотрению заказчика)
+    </div>
+    <input type="text" id="answer" placeholder="Введи пароль..." autofocus>
+    <button id="submitBtn">ПРОВЕРИТЬ</button>
+    <div id="errorMsg" class="error"></div>
+</div>
+
+<audio id="bgMusic" loop><source src="music/finale.mp3" type="audio/mpeg"></audio>
+
+<script>
+    let musicStarted = false;
+    const bgMusic = document.getElementById('bgMusic');
+    function startMusic() {
+        if (!musicStarted) { bgMusic.play().catch(e=>{}); musicStarted = true; }
+    }
+    document.body.addEventListener('click', startMusic);
+    document.getElementById('answer').addEventListener('focus', startMusic);
+
+    const correctPassword = "завтра";
+    const nextPage = "hpage11.html";
+
+    const gasterTriggers = ["gaster","гастер","666"];
+    const sansTriggers = ["геноцид","genocide","proceed","убийство","санс"];
+
+    function check() {
+        let ans = document.getElementById('answer').value.trim().toLowerCase();
+        if (sansTriggers.includes(ans)) { window.location.replace("trap_sans.html"); return; }
+        if (gasterTriggers.includes(ans)) { window.location.replace("trap_gaster.html"); return; }
+        if (ans === correctPassword) {
+            window.location.replace(nextPage);
+        } else {
+            document.getElementById('errorMsg').textContent = "❌ Неверный пароль. Спамтон недоволен.";
+            document.getElementById('answer').value = "";
+        }
+    }
+    document.getElementById('submitBtn').addEventListener('click', check);
+    document.getElementById('answer').addEventListener('keypress', (e) => { if (e.key === 'Enter') check(); });
+</script>
+</body>
+</html>

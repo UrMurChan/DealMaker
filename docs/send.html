@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Плохая концовка</title>
+    <style>
+        body { background: black; color: #ff4444; font-family: monospace; text-align: center; padding: 50px; }
+        h1 { font-size: 3rem; text-shadow: 0 0 10px red; }
+        p { font-size: 1.2rem; margin: 30px; }
+        button { background: #440000; border: 1px solid red; color: red; padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>💀 СДЕЛКА ЗАВЕРШЕНА 💀</h1>
+    <p>Ты продал душу Спамтону. Теперь ты Большая Шишка... без сердца.<br>
+    Спамтон забирает твою ДУШУ. Подарка нет.</p>
+	
+    <button onclick="window.location.replace('index.html')">Начать сначала</button>
+<audio id="bgMusic" loop>
+    <source src="music/spamton2.mp3" type="audio/mpeg">
+</audio>
+<script>
+    let musicStarted = false;
+    const bgMusic = document.getElementById('bgMusic');
+    function startMusic() {
+        if (!musicStarted) {
+            bgMusic.play().catch(e => console.log("Музыка не загружена"));
+            musicStarted = true;
+        }
+    }
+    document.body.addEventListener('click', startMusic);
+    // Если есть поле ввода, можно также повесить на фокус:
+    const input = document.querySelector('input');
+    if (input) input.addEventListener('focus', startMusic);
+</script>
+</body>
+</html>

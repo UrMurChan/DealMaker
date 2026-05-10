@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>🤢 Вопрос 6 🤢</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0f1a;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: #11161f;
+            border: 1px solid #2a3a4a;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.1);
+        }
+        h1 { color: #00ffaa; text-shadow: 0 0 5px #00ffaa; }
+        .question { font-size: 1.3rem; margin: 1.5rem 0; }
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #1e2a2a;
+            border: 1px solid #2a4a4a;
+            color: #00ffaa;
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #1e2a2a;
+            border: 1px solid #00ffaa;
+            color: #00ffaa;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 30px;
+        }
+        button:hover { background: #00ffaa; color: #000; box-shadow: 0 0 10px #00ffaa; }
+        .counter { margin-top: 1.5rem; font-size: 0.8rem; color: #5a6a7a; text-align: center; }
+        .error { color: #ff5555; margin-top: 10px; font-size: 0.9rem; }
+        .secret-tip {
+            color: transparent;
+            background: transparent;
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 20px;
+            user-select: all;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🐍 ВОПРОС 6 из 11 🐍</h1>
+    <div class="question">❓ Худшие создания?</div>
+    <input type="text" id="answer" placeholder="Введи ответ..." autofocus>
+    <button id="submitBtn">ОТВЕТИТЬ</button>
+    <div class="counter">Подсказка: Очевидно же , что это тот телевизор!</div>
+    <div id="errorMsg" class="error"></div>
+    <div class="secret-tip">Это немного забавно, как он ненавидит других за то , что они похожи на него... А, да. Я думаю над тем как тебе помочь. Это трудно в таком месте....</div>
+</div>
+
+<audio id="bgMusic" loop><source src="music/spamton.mp3" type="audio/mpeg"></audio>
+
+<script>
+    let musicStarted = false;
+    const bgMusic = document.getElementById('bgMusic');
+    function startMusic() {
+        if (!musicStarted) {
+            bgMusic.play().catch(e => console.log("Музыка не загружена"));
+            musicStarted = true;
+        }
+    }
+    document.body.addEventListener('click', startMusic);
+    document.getElementById('answer').addEventListener('focus', startMusic);
+
+    const submitBtn = document.getElementById('submitBtn');
+    const answerInput = document.getElementById('answer');
+    const errorMsg = document.getElementById('errorMsg');
+
+    const normalAnswer = "предатели";
+
+    // Триггеры ловушек
+    const gasterTriggers = ["gaster", "гастер", "gaster666", "гастер666", "666", "wdgaster"];
+    const sansTriggers = ["геноцид", "genocide", "процед", "proceed", "убийство", "kill", "санс", "sans","гитлер","эпштейн","ваня","urmurchan","пидор","мама","ториэль","лимбус компани","блин", "черт", "блять", "сука", "хрен", "идиот", "дурак","тупой", "жопа", "редиска", "сволочь", "скотина", "сучка","пидор", "мудак", "дебил", "залупа", "тварь", "ублюдок","гнида", "мразь", "падла", "срака", "хер", "пизда", "хуй"];
+    function checkAnswer() {
+        startMusic();
+        let userAnswer = answerInput.value.trim().toLowerCase();
+
+        if (sansTriggers.includes(userAnswer)) {
+            window.location.replace("trap_sans.html");
+            return;
+        }
+        if (gasterTriggers.includes(userAnswer)) {
+            window.location.replace("trap_gaster.html");
+            return;
+        }
+        if (userAnswer === normalAnswer) {
+            window.location.replace("spage7.html");
+        } 
+        else {
+            errorMsg.textContent = "❌ Неверно! Спамтон смеётся над тобой. Попробуй ещё.";
+            answerInput.value = "";
+            answerInput.focus();
+        }
+    }
+
+    submitBtn.addEventListener('click', checkAnswer);
+    answerInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAnswer(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Хорошая концовка</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(145deg, #1a4a2a, #0a2a1a);
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: #112211cc;
+            backdrop-filter: blur(5px);
+            border-radius: 60px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 100%;
+            border: 2px solid #88ff88;
+            box-shadow: 0 0 30px #44aa44;
+        }
+        .gerson-gif {
+            margin: 20px auto;
+            width: 250px;
+            height: 250px;
+            background: #1a3a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid #88ff88;
+        }
+        .gerson-gif img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #aaffaa;
+            text-shadow: 0 0 10px #44aa44;
+            margin-bottom: 1rem;
+        }
+        .message {
+            font-size: 1.2rem;
+            background: #000000aa;
+            padding: 1rem;
+            border-radius: 30px;
+            margin: 1rem 0;
+            color: #ddffdd;
+        }
+        button {
+            background: #2a6a2a;
+            border: none;
+            color: #ccffcc;
+            font-size: 1.3rem;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: monospace;
+            margin-top: 20px;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #44cc44;
+            color: black;
+            box-shadow: 0 0 20px #88ff88;
+        }
+        .quote {
+            font-style: italic;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #aaccaa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="gerson-gif">
+        <!-- ЗАГЛУШКА: вместо этой картинки вставишь гифку танцующего Герсона -->
+        <img src="images/gerson.gif" alt="Герсон пляшет" onerror="this.src='https://via.placeholder.com/250?text=Герсон+танцует'">
+    </div>
+    <h1>✨ ПОЗДРАВЛЯЮ, ГЕРОЙ! ✨</h1>
+    <div class="message">
+        🐢 Герсон хлопает тебя по плечу:<br>
+        «Хе-хе-хе! Молодец, парень! Ты не побоялся заглянуть в пустоту,<br>
+        не продал душу и спас тех, кто дорог.<br>
+        С днём рождения! Ты настоящая БОЛЬШАЯ ШИШКА!»<br><br>
+        🌟 Твоя награда ждёт тебя внизу. 🌟
+    </div>
+    <button id="goToBasementBtn">СПУСТИТЬСЯ В ПОДСОБКУ →</button>
+    <div class="quote">
+        * Ты чувствуешь, что в подвале кто-то есть. Пора заканчивать это приключение. *
+    </div>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="music/hammer.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    // Музыка для концовки
+    let musicStarted = false;
+    const bgMusic = document.getElementById('bgMusic');
+    function startMusic() {
+        if (!musicStarted) {
+            bgMusic.play().catch(e => console.log("Музыка не загружена"));
+            musicStarted = true;
+        }
+    }
+    document.body.addEventListener('click', startMusic);
+    document.getElementById('goToBasementBtn').addEventListener('click', startMusic);
+
+    // Переход на страницу с поверженным Спамтоном (или сразу на финал)
+    const btn = document.getElementById('goToBasementBtn');
+    btn.addEventListener('click', () => {
+        // Здесь можно заменить на реальную страницу, где ты сидишь с нитями.
+        // Например, "spamton_defeated.html" или просто "index.html".
+        // Пока пусть будет alert, потом изменишь.
+		alert('Теперь иди в подсобку. Там ждёт твоя награда и тот, кто сдался...');
+		window.location.href = "index.html";
+    });
+</script>
+</body>
+</html>
